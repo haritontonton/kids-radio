@@ -1,12 +1,6 @@
 {
-  "_説明": "子供に見せてよい番組だけをここに書きます。apple（Apple Podcastsの番組URL）か feed（RSSのURL）のどちらかを書けばOK。",
+  "_説明": "子供に見せてよい番組だけを shows に書きます。書き方は README.md を参照。",
   "maxEpisodesPerShow": 50,
   "hideExplicit": true,
-  "shows": [
-    {
-      "apple": "https://podcasts.apple.com/jp/podcast/example/id0000000000",
-      "memo": "ここに親用のメモ（子供には表示されません）",
-      "hideEpisodes": []
-    }
-  ]
+  "shows": []
 }
