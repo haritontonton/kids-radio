@@ -8,12 +8,19 @@ const DIST = new URL("dist/", ROOT);
 const UA = "kids-radio/1.0 (private family podcast player)";
 
 const hash = (s) => createHash("sha1").update(String(s)).digest("hex").slice(0, 12);
+// XMLの文字参照（&amp; や &#12354; など）を自前で戻す
+const decode = (s) => String(s)
+  .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+  .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(Number(d)))
+  .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'")
+  .replace(/&amp;/g, "&");
 const text = (v) => {
   if (v == null) return "";
   if (Array.isArray(v)) return text(v[0]);
-  if (typeof v === "object") return text(v["#text"] ?? v.__cdata ?? "");
-  return String(v);
+  if (typeof v === "object") return v.__cdata != null ? String(v.__cdata) : decode(v["#text"] ?? "");
+  return decode(v);
 };
+const attr = (o, k) => (o?.[k] == null ? null : decode(o[k]));
 const plain = (html, max = 400) => {
   const s = text(html)
     .replace(/<br\s*\/?>/gi, "\n")
@@ -59,17 +66,18 @@ const parser = new XMLParser({
   ignoreAttributes: false,
   attributeNamePrefix: "@",
   cdataPropName: "__cdata",
+  processEntities: false, // 長い番組説明で上限エラーになるので、文字参照は decode() で戻す
 });
 
 function parseFeed(xml, feedUrl, entry, cfg) {
   const ch = parser.parse(xml)?.rss?.channel;
   if (!ch) throw new Error(`RSSとして読めません: ${feedUrl}`);
-  const showImage = ch["itunes:image"]?.["@href"] || text(ch.image?.url);
+  const showImage = attr(ch["itunes:image"], "@href") || text(ch.image?.url);
   const hide = asArray(entry.hideEpisodes).map(String);
 
   const episodes = [];
   for (const it of asArray(ch.item)) {
-    const audio = asArray(it.enclosure).find((e) => e?.["@url"])?.["@url"];
+    const audio = attr(asArray(it.enclosure).find((e) => e?.["@url"]), "@url");
     if (!audio) continue;
     const title = plain(it.title, 200);
     const guid = text(it.guid) || audio;
@@ -82,7 +90,7 @@ function parseFeed(xml, feedUrl, entry, cfg) {
       date: Number.isNaN(date) ? null : new Date(date).toISOString(),
       duration: seconds(it["itunes:duration"]),
       audio,
-      image: it["itunes:image"]?.["@href"] || null,
+      image: attr(it["itunes:image"], "@href"),
       description: plain(it["itunes:summary"] ?? it.description),
     });
   }
