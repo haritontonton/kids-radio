@@ -1,0 +1,12 @@
+{
+  "name": "kids-radio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "serve": "npx --yes http-server dist -p 8080 -c-1"
+  },
+  "dependencies": {
+    "fast-xml-parser": "^4.5.0"
+  }
+}
