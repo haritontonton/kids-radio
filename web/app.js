@@ -90,7 +90,7 @@ function renderHome() {
       el("div", { class: "plate" },
         el("div", { class: "txt" },
           el("div", { class: "t" }, s.title),
-          el("div", { class: "m", html: ICON.clock }, `更新 ${dateJa(s.episodes[0]?.date || data.updated)}`)),
+          el("div", { class: "m", html: ICON.clock }, `更新 ${dateJa(s.episodes.reduce((m, e) => (e.date > m ? e.date : m), "") || data.updated)}`)),
         el("span", { class: "go", html: ICON.go }))))));
 }
 

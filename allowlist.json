@@ -19,11 +19,11 @@
       "apple": "https://podcasts.apple.com/jp/podcast/id1669005447"
     },
     {
-      "search": "歴史を面白く学ぶコテンラジオ （COTEN RADIO）",
       "order": "oldest",
       "maxEpisodes": "all",
       "memo": "COTEN RADIO（Amazon Musicから追加）",
-      "hideEpisodes": []
+      "hideEpisodes": [],
+      "apple": "https://podcasts.apple.com/jp/podcast/id1450522865"
     }
   ]
 }
