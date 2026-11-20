@@ -9,14 +9,14 @@
       "hideEpisodes": []
     },
     {
-      "search": "聴く『新しい理科』",
-      "memo": "Amazon Musicから追加",
-      "hideEpisodes": []
+      "memo": "聴く『新しい理科』（Amazon Musicから追加）",
+      "hideEpisodes": [],
+      "apple": "https://podcasts.apple.com/jp/podcast/id1836106242"
     },
     {
-      "search": "ゆる民俗学ラジオ",
-      "memo": "Amazon Musicから追加",
-      "hideEpisodes": []
+      "memo": "ゆる民俗学ラジオ（Amazon Musicから追加）",
+      "hideEpisodes": [],
+      "apple": "https://podcasts.apple.com/jp/podcast/id1669005447"
     }
   ]
 }
