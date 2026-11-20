@@ -30,7 +30,8 @@
 | `feed` | RSSのURL（分かる場合はこちらが確実） |
 | `search` | 番組名（Amazon Musicの番組など）。Apple Podcastsで同じ名前の番組を探す |
 | `hideEpisodes` | タイトルにこの文字を含む回は表示しない |
-| `maxEpisodes` | 番組ごとの表示数（省略時は `maxEpisodesPerShow`） |
+| `maxEpisodes` | 番組ごとの表示数（省略時は `maxEpisodesPerShow`）。`"all"` で全話 |
+| `order` | `"oldest"` で1話から順（古い順）に並べる。省略時は新しい順 |
 | `memo` | 親用メモ。アプリには出ない |
 | `hideExplicit` | 全体設定。「Explicit」指定の回を表示しない |
 

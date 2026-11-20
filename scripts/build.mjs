@@ -109,6 +109,9 @@ function parseFeed(xml, feedUrl, entry, cfg) {
     });
   }
   episodes.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  // order: "oldest" なら1話から順に（古い順）。数の制限も古い方から数える
+  const limit = entry.maxEpisodes === "all" ? Infinity : (entry.maxEpisodes || cfg.maxEpisodesPerShow || 50);
+  const picked = entry.order === "oldest" ? episodes.reverse().slice(0, limit) : episodes.slice(0, limit);
 
   return {
     id: hash(feedUrl),
@@ -116,7 +119,8 @@ function parseFeed(xml, feedUrl, entry, cfg) {
     author: plain(ch["itunes:author"], 200),
     image: showImage || null,
     description: plain(ch["itunes:summary"] ?? ch.description, 300),
-    episodes: episodes.slice(0, entry.maxEpisodes || cfg.maxEpisodesPerShow || 50),
+    order: entry.order === "oldest" ? "oldest" : "newest",
+    episodes: picked,
   };
 }
 
