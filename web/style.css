@@ -348,3 +348,22 @@ svg { display: block; }
 .lcd, .dial, .screen, .body > * { min-width: 0; }
 .back[hidden] { display: none; }
 .ep .body { display: block; }
+
+/* サムネイルは画像全体を見せる。画面の高さに収まる大きさにする */
+.screen-in { container-type: size; }
+.grid { justify-items: center; }
+.show-card { max-width: max(220px, calc(100cqh - 120px)); }
+.show-card img { aspect-ratio: 1; object-fit: contain; background: #2f3238; }
+.show-head img { object-fit: contain; background: #2f3238; }
+
+/* 画面が低いとき（スマホ）は横長のカードにして、サムネイル全体を見せる */
+@container (max-height: 380px) {
+  .grid { grid-template-columns: 1fr; justify-items: stretch; }
+  .show-card { max-width: none; display: flex; align-items: center; }
+  .show-card img { width: 120px; height: 120px; flex: none; margin: 10px 0 10px 10px; border-radius: 12px; }
+  .show-card .plate { flex: 1; min-width: 0; }
+  .plate .t { font-size: 19px; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .go { width: 42px; height: 42px; }
+}
+@container (max-height: 380px) { .plate .m { font-size: 13px; white-space: nowrap; } }
+@container (max-height: 380px) { .plate .m svg { display: none; } .plate .m { overflow: hidden; text-overflow: ellipsis; display: block; } }
