@@ -28,6 +28,7 @@
 |---|---|
 | `apple` | Apple Podcasts の番組ページURL。RSSは自動で調べる |
 | `feed` | RSSのURL（分かる場合はこちらが確実） |
+| `search` | 番組名（Amazon Musicの番組など）。Apple Podcastsで同じ名前の番組を探す |
 | `hideEpisodes` | タイトルにこの文字を含む回は表示しない |
 | `maxEpisodes` | 番組ごとの表示数（省略時は `maxEpisodesPerShow`） |
 | `memo` | 親用メモ。アプリには出ない |

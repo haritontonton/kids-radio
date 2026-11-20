@@ -51,8 +51,22 @@ async function get(url) {
   return res;
 }
 
+const norm = (s) => String(s).normalize("NFKC").replace(/[\s『』「」【】\[\]()（）]/g, "").toLowerCase();
+
 async function resolveFeed(entry) {
   if (entry.feed) return entry.feed;
+  // 番組名で Apple Podcasts を検索（Amazon Music の番組などに使う）
+  if (entry.search && !entry.apple) {
+    const url = `https://itunes.apple.com/search?media=podcast&entity=podcast&country=JP&limit=20&term=${encodeURIComponent(entry.search)}`;
+    const results = (await (await get(url)).json()).results || [];
+    const hit = results.find((r) => norm(r.collectionName) === norm(entry.search));
+    if (!hit?.feedUrl) {
+      const names = results.slice(0, 5).map((r) => r.collectionName).join(" / ");
+      throw new Error(`「${entry.search}」と同じ名前の番組が見つかりません（候補: ${names || "なし"}）`);
+    }
+    console.log(`    検索: ${entry.search} → id${hit.collectionId} ${hit.feedUrl}`);
+    return hit.feedUrl;
+  }
   const m = String(entry.apple || "").match(/id(\d+)/);
   if (!m) throw new Error(`feed も apple のURLもありません: ${JSON.stringify(entry)}`);
   const res = await get(`https://itunes.apple.com/lookup?id=${m[1]}&entity=podcast`);
