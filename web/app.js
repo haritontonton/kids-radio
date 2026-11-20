@@ -268,6 +268,7 @@ audio.addEventListener("ended", () => {
 });
 const syncPlaying = () => {
   const on = !audio.paused;
+  if (on && deck.hidden) { deck.hidden = false; deck.classList.add("pop"); }
   deck.classList.toggle("playing", on);
   $("lamp").classList.toggle("on", on);
   $("p-play").setAttribute("aria-label", on ? "一時停止" : "再生");
@@ -296,10 +297,7 @@ async function start() {
     view.replaceChildren(empty(ICON.clock, "読みこめませんでした。", "インターネットにつながっているか見てね。"));
     return;
   }
-  // 前回きいていたものを再生パネルに出しておく（自動では再生しない）
-  const last = store.get("last");
-  const hit = last && findEp(last.show, last.ep);
-  if (hit) load(hit.show, hit.ep);
+  // 再生パネルは、何かを再生するまで出さない（前回の続きは一覧の「つづきから」で分かる）
   route();
 }
 start();

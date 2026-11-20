@@ -367,3 +367,8 @@ svg { display: block; }
 }
 @container (max-height: 380px) { .plate .m { font-size: 13px; white-space: nowrap; } }
 @container (max-height: 380px) { .plate .m svg { display: none; } .plate .m { overflow: hidden; text-overflow: ellipsis; display: block; } }
+
+/* 再生パネルは再生したときだけ出す */
+.deck[hidden] { display: none; }
+.deck.pop { animation: pop .35s cubic-bezier(.2,1.3,.4,1); }
+@keyframes pop { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
