@@ -6,6 +6,9 @@ on:
   schedule:
     - cron: "17 20 * * *" # 毎日 朝5:17（日本時間）に新しいエピソードを取りこむ
   workflow_dispatch: {}
+  workflow_run: # preview ブランチが更新されたとき
+    workflows: [preview-ping]
+    types: [completed]
 
 permissions:
   contents: read
@@ -20,12 +23,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # 本番（main）→ サイトの一番上
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: npm install --no-audit --no-fund
       - run: npm run build
+
+      # プレビュー（preview ブランチがあれば）→ /preview/
+      - id: pv
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: preview
+          path: preview-src
+      - if: steps.pv.outcome == 'success'
+        working-directory: preview-src
+        run: |
+          npm install --no-audit --no-fund
+          npm run build
+          cp -r dist ../dist/preview
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

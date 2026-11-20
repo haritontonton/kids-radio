@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>おうちラジオ</title>
-  <meta name="theme-color" content="#ffb703">
+  <meta name="theme-color" content="#d9dce0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -16,31 +16,93 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="top">
-    <button class="back" id="back" aria-label="もどる" hidden>‹ もどる</button>
-    <h1 id="heading">おうちラジオ</h1>
+<div class="radio">
+
+  <!-- 上の本体部分 -->
+  <header class="bezel">
+    <svg class="planet" viewBox="0 0 64 40" aria-hidden="true">
+      <ellipse cx="32" cy="22" rx="30" ry="8" fill="none" stroke="#5b6068" stroke-width="3" transform="rotate(-12 32 22)"/>
+      <circle cx="32" cy="20" r="14" fill="url(#pg)"/>
+      <path d="M8 26 Q32 36 56 18" fill="none" stroke="#5b6068" stroke-width="3" transform="rotate(-6 32 22)"/>
+      <defs><radialGradient id="pg" cx="35%" cy="30%"><stop offset="0" stop-color="#9aa0a8"/><stop offset="1" stop-color="#3f444b"/></radialGradient></defs>
+    </svg>
+    <div class="brand">HARITON<br>RADIO</div>
+    <div class="vent" aria-hidden="true"><i></i><i></i><i></i></div>
+    <span class="power-knob" aria-hidden="true"></span>
+    <span class="screw" style="top:10px;right:10px"></span>
   </header>
 
-  <main id="view" aria-live="polite"></main>
+  <!-- オレンジの帯 -->
+  <div class="band">
+    <button class="back" id="back" aria-label="もどる" hidden>
+      <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <svg class="antenna" id="antenna" viewBox="0 0 48 48" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round">
+        <path d="M14 10a16 16 0 0 0 0 22M34 10a16 16 0 0 1 0 22M19.5 15a8.5 8.5 0 0 0 0 12M28.5 15a8.5 8.5 0 0 1 0 12"/>
+        <path d="M24 22L16 44M24 22l8 22M19 36h10" stroke-linejoin="round"/>
+      </g>
+      <circle cx="24" cy="21" r="3.6" fill="currentColor"/>
+    </svg>
+    <h1 id="heading">おうちラジオ</h1>
+    <div class="lamp" id="lamp" aria-hidden="true"><span>PLAY</span><i></i></div>
+  </div>
 
-  <!-- 再生バー（下に固定） -->
-  <section class="player" id="player" hidden>
-    <img id="p-img" alt="">
-    <div class="p-info">
-      <div class="p-title" id="p-title"></div>
-      <div class="p-show" id="p-show"></div>
-      <input type="range" id="p-seek" min="0" max="100" value="0" step="1" aria-label="再生位置">
-      <div class="p-time"><span id="p-cur">0:00</span><span id="p-dur">0:00</span></div>
-    </div>
-    <div class="p-ctrl">
-      <button id="p-back" aria-label="15秒もどる">↺15</button>
-      <button id="p-play" class="play" aria-label="再生">▶</button>
-      <button id="p-fwd" aria-label="30秒すすむ">30↻</button>
-      <button id="p-rate" class="rate" aria-label="はやさ">1x</button>
-    </div>
-  </section>
+  <div class="body">
+    <!-- 画面 -->
+    <main class="screen">
+      <div class="screen-in" id="view" aria-live="polite"></div>
+    </main>
 
-  <audio id="audio" preload="metadata"></audio>
-  <script src="app.js"></script>
+    <!-- 再生パネル -->
+    <section class="deck" id="player">
+      <div class="lcd">
+        <span class="grille" aria-hidden="true"></span>
+        <div class="lcd-text"><span id="p-title">ばんぐみを えらんでね</span></div>
+        <span class="lcd-time"><span id="p-cur">0:00</span> / <span id="p-dur">0:00</span></span>
+        <button class="star" id="p-fav" aria-label="お気に入り" hidden>
+          <svg viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2 6.4 20.2l1.1-6.3L2.9 9.5l6.3-.9z"/></svg>
+        </button>
+      </div>
+      <div class="dial">
+        <span class="screw"></span>
+        <input type="range" id="p-seek" min="0" max="1000" value="0" step="1" aria-label="再生位置">
+      </div>
+      <div class="controls">
+        <button class="round" id="p-back" aria-label="15秒もどる">
+          <svg viewBox="0 0 40 24"><path d="M19 3L5 12l14 9zM35 3L21 12l14 9z"/></svg><b>15</b>
+        </button>
+        <button class="round big" id="p-play" aria-label="再生">
+          <svg class="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12.5-7.5z" stroke-linejoin="round"/></svg>
+          <svg class="i-pause" viewBox="0 0 24 24"><rect x="5.5" y="4.5" width="4.5" height="15" rx="1.2"/><rect x="14" y="4.5" width="4.5" height="15" rx="1.2"/></svg>
+        </button>
+        <button class="round" id="p-fwd" aria-label="30秒すすむ">
+          <svg viewBox="0 0 40 24"><path d="M5 3l14 9-14 9zM21 3l14 9-14 9z"/></svg><b>30</b>
+        </button>
+        <div class="rate">
+          <div class="rate-label">はやさ</div>
+          <button class="rate-knob" id="p-rate" aria-label="再生のはやさ"><i id="rate-needle"></i></button>
+          <div class="rate-val" id="rate-val">1x</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 下のタブ -->
+  <nav class="tabs">
+    <button data-tab="home" class="on">
+      <svg viewBox="0 0 24 24"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>ホーム
+    </button>
+    <button data-tab="fav">
+      <svg viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2 6.4 20.2l1.1-6.3L2.9 9.5l6.3-.9z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>お気に入り
+    </button>
+    <button data-tab="done">
+      <svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="13" width="4.5" height="7" rx="1.5" fill="currentColor"/><rect x="16.5" y="13" width="4.5" height="7" rx="1.5" fill="currentColor"/></g></svg>きいた
+    </button>
+  </nav>
+</div>
+
+<audio id="audio" preload="metadata"></audio>
+<script src="app.js"></script>
 </body>
 </html>
