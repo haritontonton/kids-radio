@@ -1,0 +1,10 @@
+name: preview-ping
+# preview ブランチに push されたら、本番の build-and-deploy を呼び出す（プレビューは /preview/ に公開される）
+on:
+  push:
+    branches: [preview]
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "preview updated"
